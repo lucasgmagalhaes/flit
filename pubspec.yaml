@@ -8,7 +8,10 @@ environment:
   sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
-  reflectable: ^2.2.0
+  reflectable: any
+  analyzer: any
+  build_runner: any
+  dson: any
   flutter:
     sdk: flutter
   sqflite:

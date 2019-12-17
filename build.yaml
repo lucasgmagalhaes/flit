@@ -1,0 +1,8 @@
+targets:
+  $default:
+    builders:
+      reflectable:
+        generate_for:
+          - lib/src/core/parser.dart
+        options:
+          formatted: true

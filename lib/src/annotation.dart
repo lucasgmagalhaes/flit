@@ -1,20 +1,19 @@
-import 'package:reflectable/reflectable.dart';
+import 'package:dson/dson.dart';
 
-class _Column extends Reflectable {
+class Table extends Serializable {
   final String name;
-  const _Column({this.name}) : super(invokingCapability);
+  const Table({this.name});
 }
 
-class _PrimaryKey extends Reflectable {
-  final String columnName;
-   const _PrimaryKey({this.columnName}) : super(invokingCapability);
-}
-
-class _Table extends Reflectable {
+class Column extends Serializable {
   final String name;
-  const _Table({this.name}) : super(invokingCapability);
+  const Column({this.name});
 }
 
-const table = const _Table();
-const column = const _Column();
-const primaryKey = const _PrimaryKey();
+class Identifier extends Serializable {
+  const Identifier();
+}
+
+const identifier = const Identifier();
+const column = const Column();
+const table = const Table();
