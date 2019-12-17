@@ -2,16 +2,19 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Connection {
-  final String _database;
-
-  Connection(this._database);
+  final String _databaseFileName;
+  Database _db;
+  Connection(this._databaseFileName);
 
   void start() async {
-    final Database database =
-       await openDatabase(join(await getDatabasesPath(), this._database));
+    if (this._db == null) {
+      this._db = await openDatabase(
+          join(await getDatabasesPath(), this._databaseFileName));
+    }
   }
 
-  void close() {
-
+  Future<void> close() async {
+    await this._db.close();
   }
+  
 }
