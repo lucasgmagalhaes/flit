@@ -1,4 +1,5 @@
-import 'package:flu_entity/src/annotation.dart';
+import 'package:flit/flit.dart';
+
 part 'user.g.dart';
 
 @Table()
@@ -10,7 +11,7 @@ class User {
   String email;
 
   User();
-  
+
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }

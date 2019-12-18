@@ -1,4 +1,4 @@
-# flu_entity
+# flit
 
 A new Flutter package project.
 

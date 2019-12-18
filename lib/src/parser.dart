@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class Parser {
-  static String createQuery<T>(Object entity, QueryAction queryType) {
+  static String createQuery(Object entity, QueryAction queryType) {
     String query = queryType.name;
 
     if (queryType == QueryAction.insert) {

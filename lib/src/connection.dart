@@ -1,6 +1,5 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-
 class Connection {
   final String _databaseFileName;
   Database _db;

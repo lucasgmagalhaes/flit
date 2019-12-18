@@ -1,2 +1,0 @@
-library flu_entity;
-
