@@ -9,11 +9,18 @@ void main() {
       User user = new User();
       user.name = "test";
       user.email = "test@email.com";
-      String query = Parser.createQuery(user, QueryAction.insert);
+      String query = Parser.createQuery(QueryAction.insert, entity: user);
       expect(
           query,
           equals(
               "INSERT INTO USER(name,email) VALUES('test','test@email.com')"));
+    });
+  });
+
+  group("Select querys", () {
+    test("should create a select all query", () {
+      String query = Parser.createQuery<User>(QueryAction.select);
+      expect(query, equals("SELECT * FROM USER"));
     });
   });
 }

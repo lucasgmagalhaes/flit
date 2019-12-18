@@ -1,46 +1,89 @@
 import 'dart:convert';
 
 class Parser {
-  static String createQuery(Object entity, QueryAction queryType) {
-    String query = queryType.name;
+  static String createQuery<T>(QueryAction queryAction, {Object entity}) {
+    if (queryAction == QueryAction.insert) {
+      return _createInsertQuery(entity);
+    } else if (queryAction == QueryAction.select) {
+      return _createSelectQuery<T>();
+    } else {
+      return "";
+    }
+  }
 
-    if (queryType == QueryAction.insert) {
-      query += " " + entity.runtimeType.toString().toUpperCase() + "(";
+  /// Helper for generic type get
+  static Type typeOf<T>() => T;
+
+  static String _createSelectQuery<T extends Object>({Object entity}) {
+    String query = QueryAction.select.name + " ";
+    String tableName;
+
+    if (entity != null) {
+      var objDeserializad = _convertEntityToMap(entity);
+      query += _createColumnsString(objDeserializad.keys);
+      tableName = entity.runtimeType.toString().toUpperCase();
+    } else {
+      query += "*";
+      Type type = typeOf<T>();
+      tableName = type.toString().toUpperCase();
     }
 
-    String objEncoded = json.encode(entity);
-    Map<dynamic, dynamic> objDeserializad = json.decode(objEncoded);
+    query += " FROM ";
+    query += tableName;
+    return query;
+  }
 
-    objDeserializad.keys.forEach((column) {
-      if (column != "id") {
-        query += "$column,";
-      }
-    });
+  static String _createInsertQuery(Object entity) {
+    String query = QueryAction.insert.name;
 
-    query = query.substring(0, query.length - 1);
+    query += " " + entity.runtimeType.toString().toUpperCase() + "(";
+
+    var objDeserializad = _convertEntityToMap(entity);
+    query += _createColumnsString(objDeserializad.keys, exceptions: ["id"]);
+
     query += ")";
-
-    if (queryType == QueryAction.insert) {
-      query += " VALUES(";
-    }
+    query += " VALUES(";
 
     var colValues = objDeserializad.values;
+    query += _createColumnsValuesString(colValues, [0]);
 
-    for (int i = 0; i < colValues.length; i++) {
-      if (i != 0) {
-        dynamic element = colValues.elementAt(i);
+    query += ")";
+    return query;
+  }
+
+  static Map<dynamic, dynamic> _convertEntityToMap(Object entity) {
+    String objEncoded = json.encode(entity);
+    return json.decode(objEncoded);
+  }
+
+  static String _createColumnsString(Iterable<dynamic> values,
+      {List<String> exceptions}) {
+    String stringValues = "";
+
+    values.forEach((column) {
+      if (!exceptions.contains(column)) {
+        stringValues += "$column,";
+      }
+    });
+    return stringValues.substring(0, stringValues.length - 1);
+  }
+
+  static String _createColumnsValuesString(
+      Iterable<dynamic> values, List<int> indexExceptions) {
+    String stringValues = "";
+
+    for (int i = 0; i < values.length; i++) {
+      if (!indexExceptions.contains(i)) {
+        dynamic element = values.elementAt(i);
         if (element is String) {
-          query += "'$element',";
+          stringValues += "'$element',";
         } else {
-          query += "$element',";
+          stringValues += "$element',";
         }
       }
     }
 
-    query = query.substring(0, query.length - 1);
-    query += ")";
-
-    return query;
+    return stringValues.substring(0, stringValues.length - 1);
   }
 }
 
