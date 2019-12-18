@@ -1,19 +1,13 @@
-import 'package:dson/dson.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-class Table extends Serializable {
-  final String name;
-  const Table({this.name});
+class Table extends JsonSerializable {
+  const Table() : super();
 }
 
-class Column extends Serializable {
-  final String name;
-  const Column({this.name});
+class Column extends JsonKey {
+  const Column({String name}) : super(name: name);
 }
 
-class Identifier extends Serializable {
+class Identifier extends JsonSerializable {
   const Identifier();
 }
-
-const identifier = const Identifier();
-const column = const Column();
-const table = const Table();

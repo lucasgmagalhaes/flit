@@ -1,34 +1,46 @@
-import 'package:dson/dson.dart';
-import 'package:flu_entity/src/annotation.dart';
-import 'parser.reflectable.dart';
-
-void main() {
-  initializeReflectable();
-}
+import 'dart:convert';
 
 class Parser {
   static String createQuery<T>(Object entity, QueryAction queryType) {
     String query = queryType.name;
 
-    // Map<dynamic, dynamic> objDeserializad = toMap(entity);
+    if (queryType == QueryAction.insert) {
+      query += " " + entity.runtimeType.toString().toUpperCase() + "(";
+    }
 
-    // objDeserializad.keys.forEach((column) {
-    //   query += "$column,";
-    // });
-    // query.substring(0, query.length - 2);
+    String objEncoded = json.encode(entity);
+    Map<dynamic, dynamic> objDeserializad = json.decode(objEncoded);
 
-    // if (queryType == QueryAction.insert) {
-    //   query += "VALUES (";
-    // }
+    objDeserializad.keys.forEach((column) {
+      if (column != "id") {
+        query += "$column,";
+      }
+    });
 
-    // var colValues = objDeserializad.values;
-    // colValues.forEach((value) {
-    //   query += "$column,";
-    // });
-    // query.substring(0, query.length - 2);
-    // query += ")";
-    return toJson(entity);
-    ///return query;
+    query = query.substring(0, query.length - 1);
+    query += ")";
+
+    if (queryType == QueryAction.insert) {
+      query += " VALUES(";
+    }
+
+    var colValues = objDeserializad.values;
+
+    for (int i = 0; i < colValues.length; i++) {
+      if (i != 0) {
+        dynamic element = colValues.elementAt(i);
+        if (element is String) {
+          query += "'$element',";
+        } else {
+          query += "$element',";
+        }
+      }
+    }
+
+    query = query.substring(0, query.length - 1);
+    query += ")";
+
+    return query;
   }
 }
 
