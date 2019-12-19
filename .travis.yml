@@ -3,7 +3,14 @@ language: dart
 dart:
   - stable
 
-before_script:
-    - "flutter pub get"
+  before_script:
+    - cd ..
+    - git clone https://github.com/flutter/flutter.git
+    - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+    - flutter doctor
 
-script: "flutter test test"
+    script:
+        - cd $TRAVIS_BUILD_DIR
+        - flutter packages get
+        - flutter analyze --no-pub --no-current-package lib
+        - flutter test test
