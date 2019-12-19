@@ -1,5 +1,10 @@
 language: dart
+dart:
+  - stable
+  - dev
 dart_task:
 - test: --platform vm
 - dartanalyzer: --fatal-warnings lib
 - dartfmt
+
+script: "dartanalyzer --fatal-warnings . && flupub run build_runner test --delete-conflicting-outputs"
