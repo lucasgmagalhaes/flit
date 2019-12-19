@@ -42,6 +42,10 @@ class Parser {
   }
 
   static String createSelectQuery(Type entityType, {Object entity}) {
+    if (entityType == null) {
+      throw new EntityTypeMissing();
+    }
+
     String query = QueryAction.select.name + " ";
     String tableName;
 
