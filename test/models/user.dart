@@ -4,7 +4,7 @@ part 'user.g.dart';
 
 @Table()
 class User {
-  String id;
+  int id;
   @Column(name: "user_name")
   String name; 
   @Column(name: "email_usuario")

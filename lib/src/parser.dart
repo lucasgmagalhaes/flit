@@ -1,20 +1,47 @@
 import 'dart:convert';
 
+import 'package:flit/src/exceptions.dart';
+
+import 'criteria.dart';
+
 class Parser {
-  static String createQuery<T>(QueryAction queryAction, {Object entity}) {
-    if (queryAction == QueryAction.insert) {
-      return _createInsertQuery(entity);
-    } else if (queryAction == QueryAction.select) {
-      return _createSelectQuery<T>();
-    } else {
-      return "";
+  static String createUpdateQuery(Object entity) {
+    String query = "UPDATE ${entity.runtimeType.toString().toUpperCase()} SET ";
+    var map = _convertEntityToMap(entity);
+    List<Criteria> criterias = _convertMapToCriteria(map);
+    Criteria idCriteria = criterias.firstWhere((criteria) {
+      return criteria.field == "id";
+    });
+
+    if (idCriteria.value == null) {
+      throw new UpdateNotExistingEntityError(entity.runtimeType);
     }
+
+    int id = idCriteria.value;
+    criterias.remove(idCriteria);
+    query += _convertCriteriaToStringQuery(criterias);
+    query += " WHERE ID = $id";
+    return query;
   }
 
-  /// Helper for generic type get
-  static Type typeOf<T>() => T;
+  static String createSelectQueryWithFilter(
+      List<Criteria> criterias, Type entityType) {
+    String query = "${createSelectQuery(entityType)} ";
+    query += "WHERE ${_convertCriteriaToStringQuery(criterias)}";
+    return query;
+  }
 
-  static String _createSelectQuery<T extends Object>({Object entity}) {
+  static String _convertCriteriaToStringQuery(List<Criteria> criterias) {
+    String criteriaString = "";
+    criterias.forEach((criteria) {
+      criteriaString +=
+          "${criteria.field.toUpperCase()} = ${_getValueRespectiveString(criteria.value)} AND ";
+    });
+
+    return criteriaString.substring(0, criteriaString.length - 5);
+  }
+
+  static String createSelectQuery(Type entityType, {Object entity}) {
     String query = QueryAction.select.name + " ";
     String tableName;
 
@@ -24,8 +51,7 @@ class Parser {
       tableName = entity.runtimeType.toString().toUpperCase();
     } else {
       query += "*";
-      Type type = typeOf<T>();
-      tableName = type.toString().toUpperCase();
+      tableName = entityType.toString().toUpperCase();
     }
 
     query += " FROM ";
@@ -33,7 +59,15 @@ class Parser {
     return query;
   }
 
-  static String _createInsertQuery(Object entity) {
+  static List<Criteria> _convertMapToCriteria(Map<dynamic, dynamic> map) {
+    List<Criteria> criterias = new List<Criteria>();
+    map.forEach((key, value) {
+      criterias.add(Criteria(key, value));
+    });
+    return criterias;
+  }
+
+  static String createInsertQuery(Object entity) {
     String query = QueryAction.insert.name;
 
     query += " " + entity.runtimeType.toString().toUpperCase() + "(";
@@ -75,15 +109,18 @@ class Parser {
     for (int i = 0; i < values.length; i++) {
       if (!indexExceptions.contains(i)) {
         dynamic element = values.elementAt(i);
-        if (element is String) {
-          stringValues += "'$element',";
-        } else {
-          stringValues += "$element',";
-        }
+        stringValues += "${_getValueRespectiveString(element)},";
       }
     }
 
     return stringValues.substring(0, stringValues.length - 1);
+  }
+
+  static String _getValueRespectiveString(dynamic value) {
+    if (value is String) {
+      return "'$value'";
+    }
+    return value.toString();
   }
 }
 
