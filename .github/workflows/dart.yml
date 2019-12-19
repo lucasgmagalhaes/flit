@@ -16,4 +16,4 @@ jobs:
       with:
         channel: 'stable'  
     - run: flutter pub get
-    - run: flutter build aot
+    - run: flutter test test
