@@ -1,9 +1,9 @@
 language: dart
+
 dart:
   - stable
-  - dev
 
 before_script:
-        - "flutter pub get"
+    - "flutter pub get"
 
 script: "flutter test test"
