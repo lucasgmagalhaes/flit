@@ -8,7 +8,7 @@ void main() {
   String testName = "testName";
   int testId = 2;
 
-  group("Insert querys", () {
+  group("group insert", () {
     test('should create a insert query', () {
       User user = new User();
       user.name = "test";
@@ -21,7 +21,7 @@ void main() {
     });
   });
 
-  group("Select querys", () {
+  group("Group select", () {
     test("should throw EntityTypeMissing because it was not informed", () {
       try {
         Parser.createSelectQuery(null);
@@ -86,6 +86,33 @@ void main() {
             "Fail beacause Parser created a update query for a no existing entity");
       } catch (exception) {
         expect(exception.runtimeType, equals(UpdateNotExistingEntityError));
+      }
+    });
+  });
+
+  group("Group delete", () {
+    test("should delete a entity by it's id", () {
+      String query = Parser.createDeleteQuery(User, testId);
+      expect(query, equals("DELETE FROM USER WHERE ID = $testId"));
+    });
+
+    test("should throw EntityTypeMissing because entity type is not informed", () {
+       try {
+        Parser.createDeleteQuery(null, testId);
+        fail(
+            "Fail beacause Parser created a delete query without entity type");
+      } catch (exception) {
+        expect(exception.runtimeType, equals(EntityTypeMissing));
+      }
+    });
+
+    test("should throw ArgumentError because id is not informed", () {
+       try {
+        Parser.createDeleteQuery(User, null);
+        fail(
+            "Fail beacause Parser created a delete query without entity id");
+      } catch (exception) {
+        expect(exception.runtimeType, equals(ArgumentError));
       }
     });
   });

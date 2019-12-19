@@ -63,6 +63,18 @@ class Parser {
     return query;
   }
 
+  static String createDeleteQuery(Type entityType, dynamic id) {
+    if (entityType == null) {
+      throw new EntityTypeMissing();
+    }
+
+    if (id == null) {
+      throw new ArgumentError.notNull("id");
+    }
+
+    return "DELETE FROM ${entityType.toString().toUpperCase()} WHERE ID = ${_getValueRespectiveString(id)}";
+  }
+
   static List<Criteria> _convertMapToCriteria(Map<dynamic, dynamic> map) {
     List<Criteria> criterias = new List<Criteria>();
     map.forEach((key, value) {
