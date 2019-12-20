@@ -1,27 +1,24 @@
+import 'package:flit/flit.dart';
+
 class Service<T> {
+  Connection _con;
 
-  T get(T entity) {
+  Service(this._con);
 
+  T get(T entity) {}
+  T getById(Object id) {}
+  List<T> getAll() {}
+  Future<T> save(T entity) async {
+    String query = Parser.createInsertQuery(entity);
+    return await _con.run(query);
   }
-  T getById(Object id){
 
+  Future<T> update(T entity) async {
+    String query = Parser.createUpdateQuery(entity);
+    return await _con.run(query);
   }
-  List<T> getAll(){
 
-  }
-  T save(T entity){
-
-  }
-  T update(T entity){
-
-  }
-  T saveOrUpdate(T entity){
-
-  }
-  T delete(T entity){
-
-  }
-  T deleteById(Object id){
-    
-  }
+  T saveOrUpdate(T entity) {}
+  T delete(T entity) {}
+  T deleteById(Object id) {}
 }

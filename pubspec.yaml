@@ -10,6 +10,7 @@ environment:
 dependencies:
   json_serializable: any
   path_provider: any
+  flutter_isolate: any
   flutter:
     sdk: flutter
   sqflite: any
@@ -17,5 +18,18 @@ dependencies:
 
 dev_dependencies:
   build_runner: any
+  test: any
   flutter_test:
     sdk: flutter
+  sqflite_test:
+    git:
+      url: git://github.com/tekartik/sqflite_more
+      ref: dart2
+      path: sqflite_test
+      version: ">=0.2.0"
+  sqflite_server:
+    git:
+      url: git://github.com/tekartik/sqflite_more
+      ref: dart2
+      path: sqflite_server
+      version: '>=0.3.0'

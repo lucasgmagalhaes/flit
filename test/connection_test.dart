@@ -8,7 +8,7 @@ void main() {
 
   test("should open database connection", () async {
     String path = await buildDbPath("test.db");
-    Connection con = new Connection(path);
+    Connection con = new Connection(databasePath: path);
     con.open();
   });
 }

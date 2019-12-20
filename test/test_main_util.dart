@@ -12,12 +12,15 @@ void initializeResources() {
   channel.setMockMethodCallHandler((MethodCall methodCall) async {
     return ".";
   });
-  channel.setMockMethodCallHandler((MethodCall methodCall) async {
-    return ".";
-  });
+ 
+  // const MethodChannel channelSqflite = MethodChannel('com.tekartik.sqflite');
+  // channelSqflite.setMockMethodCallHandler((MethodCall methodCall) async {
+  //   return databaseFactoryMock;
+  // });
 }
 
 Future<String> buildDbPath(String dbName) async {
   Directory documentsDirectory = await getApplicationDocumentsDirectory();
   return join(documentsDirectory.path, dbName);
 }
+
