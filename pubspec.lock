@@ -148,6 +148,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.1"
+  csv:
+    dependency: transitive
+    description:
+      name: csv
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.3"
   dart_style:
     dependency: transitive
     description:
@@ -492,6 +499,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.7+3"
+  sqflite_porter:
+    dependency: "direct dev"
+    description:
+      path: sqflite_porter
+      ref: dart2
+      resolved-ref: "784bcc9b5d2aa7b2ac6c37e37f18dbc1e31c2881"
+      url: "git://github.com/tekartik/sqflite_more"
+    source: git
+    version: "0.2.0+1"
   sqflite_server:
     dependency: "direct dev"
     description:
@@ -554,6 +570,24 @@ packages:
       url: "git://github.com/tekartik/common_utils.dart"
     source: git
     version: "0.10.10"
+  tekartik_test_menu:
+    dependency: transitive
+    description:
+      path: test_menu
+      ref: dart2
+      resolved-ref: cf0abe5162d9b319dd9297ea3895b0b4df72d7d2
+      url: "git://github.com/tekartik/test_menu.dart"
+    source: git
+    version: "0.6.0"
+  tekartik_test_menu_flutter:
+    dependency: "direct dev"
+    description:
+      path: test_menu_flutter
+      ref: dart2
+      resolved-ref: "593277b4887800eb6ad264ec010a95b359287868"
+      url: "git://github.com/tekartik/test_menu_flutter"
+    source: git
+    version: "0.3.0"
   tekartik_web_socket:
     dependency: transitive
     description:

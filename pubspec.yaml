@@ -33,3 +33,15 @@ dev_dependencies:
       ref: dart2
       path: sqflite_server
       version: '>=0.3.0'
+  sqflite_porter:
+    git:
+      url: git://github.com/tekartik/sqflite_more
+      ref: dart2
+      path: sqflite_porter
+      version: '>=0.2.0'
+  tekartik_test_menu_flutter:
+    git:
+      url: git://github.com/tekartik/test_menu_flutter
+      ref: dart2
+      path: test_menu_flutter
+      version: ">=0.2.4"
